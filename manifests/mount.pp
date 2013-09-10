@@ -8,6 +8,7 @@ define autofs::mount (
   include autofs
   include autofs::params
 
+  warn("autofs::mount is deprecated, use autofs::indirectmount")
   if $mapfile != undef {
     $path = $mapfile
   } else {
