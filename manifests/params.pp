@@ -23,7 +23,7 @@ class autofs::params {
       $service    = 'autofs'
     }
     default: {
-      fail("osfamily not supported: $::osfamily")
+      fail("osfamily not supported: ${::osfamily}")
     }
   }
 
