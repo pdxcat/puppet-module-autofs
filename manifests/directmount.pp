@@ -9,6 +9,7 @@ define autofs::directmount (
   include autofs::params
 
   if $mapfile != undef {
+    validate_absolute_path($mapfile)
     $path = $mapfile
   } else {
     $path = $autofs::params::master

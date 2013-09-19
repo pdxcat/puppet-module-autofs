@@ -1,5 +1,4 @@
 define autofs::include (
-  $include = $title,
   $map     = $title,
   $mapfile = undef
 ) {
@@ -7,6 +6,7 @@ define autofs::include (
   include autofs::params
 
   if $mapfile != undef {
+    validate_absolute_path($mapfile)
     $path = $mapfile
   } else {
     $path = $autofs::params::master

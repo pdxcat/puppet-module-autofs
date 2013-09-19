@@ -9,3 +9,4 @@ project_page 'https://github.com/pdxcat/puppet-module-autofs'
 
 ## Add dependencies, if any:
 dependency 'ripienaar/concat', '>= 0.1.0'
+dependency 'puppetlabs/stdlib', '>= 3.0.0'
