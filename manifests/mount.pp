@@ -37,7 +37,7 @@ define autofs::mount (
     concat::fragment { "autofs::mount master ${path}:${mountpoint}":
       ensure  => $ensure,
       target  => $autofs::params::master,
-      content => "${title} ${path} ${mapfile_options}",
+      content => "${title} ${path} ${mapfile_options} \n",
     }
 
   }
