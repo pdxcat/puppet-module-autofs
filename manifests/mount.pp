@@ -7,6 +7,7 @@ define autofs::mount (
   $options    = undef,
   $mapfile    = undef,
   $order      = undef,
+  $mapfile_options = undef
 ) {
   include autofs
   include autofs::params
@@ -24,6 +25,21 @@ define autofs::mount (
     mapfile => $mapfile_real,
     content => $content,
     order   => $order,
+  }
+
+  if $mapfile {
+    if !defined(Autofs::Mapfile["autofs::mount ${autofs::params::master}"]) {
+      autofs::mapfile { "autofs::mount ${autofs::params::master}":
+        path => $autofs::params::master
+      }
+    }
+
+    concat::fragment { "autofs::mount master ${path}:${mountpoint}":
+      ensure  => $ensure,
+      target  => $autofs::params::master,
+      content => "${title} ${path} ${mapfile_options}",
+    }
+
   }
 
 }
