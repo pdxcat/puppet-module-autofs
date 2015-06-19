@@ -1,8 +1,11 @@
 # == Define: autofs::include
 
 define autofs::include (
-  $map     = $title,
-  $mapfile = undef
+  $map                  = $title,
+  $mapfile              = undef,
+  $direct               = undef,
+  $options              = undef,
+  $mountpoint_indirect  = undef
 ) {
   include autofs
   include autofs::params
@@ -18,9 +21,19 @@ define autofs::include (
     path => $path
   }
 
+  if $direct == 'true' {
+      $content_line = "/- ${map} ${options}\n"
+  } else {
+      if $mountpoint_indirect {
+          $content_line = "${mountpoint_indirect} ${map} ${options}\n"
+      } else {
+          $content_line = "+${map} ${options}\n"
+      }
+  }
+
   concat::fragment { "autofs::include ${title}":
     target  => $path,
-    content => "+${map}\n",
+    content => $content_line,
     order   => '200',
   }
 

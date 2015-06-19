@@ -26,6 +26,28 @@ autofs::mount { '/www':
   mapfile => '/etc/auto.web',
 }
 
+autofs::include { 'auto.share':
+  direct => 'true',
+  options => '--timeout=3600',
+}
+
+autofs::mount { '/share':
+  map => '',
+  options => '-fstype=nfs,rw,soft,intr	192.168.1.100:/share',
+  mapfile => '/etc/auto.share',
+}
+
+autofs::include { 'auto.users':
+  mountpoint_indirect => '/users',
+  options => '--timeout=3600',
+}
+
+autofs::mount { '*':
+  map => '',
+  options => '-fstype=nfs,rw,soft,intr	192.168.1.100:/users/&',
+  mapfile => '/etc/auto.users',
+}
+
 autofs::include { 'auto.local': }
 ```
 
@@ -36,6 +58,8 @@ autofs::include { 'auto.local': }
 ```
 /cat ldap:ou=cat,ou=autofs,dc=cat,dc=pdx,dc=edu -ro,hard,intr,nosuid,browse
 /home ldap:ou=home,ou=autofs,dc=cat,dc=pdx,dc=edu -rw,hard,intr,nosuid,nobrowse
+/users auto.users --timeout=3600
+/- auto.share --timeout=3600
 +auto.local
 +auto.web
 ```
@@ -44,6 +68,18 @@ autofs::include { 'auto.local': }
 
 ```
 /www ldap:ou=www,ou=autofs,dc=cat,dc=pdx,dc=edu -rw,hard,intr,nosuid,browse
+```
+
+#### /etc/auto.share
+
+```
+/share  -fstype=nfs,rw,soft,intr	192.168.1.100:/share
+```
+
+#### /etc/auto.users
+
+```
+*  -fstype=nfs,rw,soft,intr	192.168.1.100:/users/&
 ```
 
 #### /etc/auto.local
