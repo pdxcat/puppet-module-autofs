@@ -14,7 +14,6 @@ define autofs::mapfile (
     }
 
     concat::fragment { "autofs::fragment preamble ${path}":
-      ensure  => present,
       target  => $path,
       content => "# File managed by puppet, do not edit\n",
       order   => '01',
