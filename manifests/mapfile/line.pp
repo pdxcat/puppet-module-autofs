@@ -4,16 +4,13 @@ define autofs::mapfile::line (
   $content,
   $order = '100',
 ) {
-
-  autofs::mapfile { "autofs::mount ${title}":
+  ensure_resource('autofs::mapfile', "autofs::mount ${title}", {
     path => $mapfile
-  }
+  })
 
   concat::fragment { $title:
     target  => $mapfile,
     content => $content,
     order   => $order,
   }
-
-
 }

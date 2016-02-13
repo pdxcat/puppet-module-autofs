@@ -1,17 +1,27 @@
 # == Define: autofs
 
-class autofs {
-  include autofs::params
+class autofs(
+  $package_name   = $autofs::params::package_name,
+  $package_ensure = $autofs::params::package_ensure,
+  $service_name   = $autofs::params::service_name,
+  $service_ensure = $autofs::params::service_ensure,
+  $service_enable = $autofs::params::service_enable,
+  $master_mount   = $autofs::params::master_mount,
+  $file_owner     = $autofs::params::file_owner,
+  $file_group     = $autofs::params::file_group,
+) inherits autofs::params {
+  validate_string($package_name)
+  validate_absolute_path($master_mount)
+  validate_bool($service_enable)
 
-  package { $autofs::params::package:
-    ensure => installed,
-    notify => Service[$autofs::params::service],
+  package { $package_name:
+    ensure => $package_ensure;
   }
 
-  service { $autofs::params::service:
-    ensure  => running,
-    enable  => true,
-    require => Package[$autofs::params::package],
+  service { $service_name:
+    ensure  => $service_ensure,
+    enable  => $service_enable;
   }
 
+  Package[$package_name] -> Service[$service_name]
 }

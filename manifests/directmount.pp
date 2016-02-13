@@ -5,23 +5,16 @@ define autofs::directmount (
   $ensure     = 'present',
   $mountpoint = $title,
   $options    = undef,
-  $mapfile    = undef,
+  $mapfile    = $autofs::master_mount,
   $order      = undef,
 ) {
   include autofs
-  include autofs::params
 
-  if $mapfile != undef {
-    validate_absolute_path($mapfile)
-    $mapfile_real = $mapfile
-  } else {
-    $mapfile_real = $autofs::params::master
-  }
+  validate_absolute_path($mapfile)
 
-  autofs::mapfile::line { "autofs::mount ${mapfile_real}:${mountpoint}":
-    mapfile => $mapfile_real,
-    content => "${mountpoint} ${options} ${location}\n",
+  autofs::mapfile::line { "autofs::mount ${mapfile}:${mountpoint}":
+    mapfile => $mapfile,
+    content => "${mountpoint} ${options} ${location}",
     order   => $order,
   }
-
 }

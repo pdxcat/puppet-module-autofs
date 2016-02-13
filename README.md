@@ -1,6 +1,6 @@
 # Autofs module for Puppet
 
-Forked from https://github.com/pdxcat/puppet-module-autofs
+Forked from [Reid Vandewiele](https://github.com/pdxcat/puppet-module-autofs)
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/jkroepke/autofs.svg)](https://forge.puppetlabs.com/jkroepke/autofs) [![Build Status](https://travis-ci.org/jkroepke/puppet-module-autofs.svg?branch=master)](https://travis-ci.org/jkroepke/puppet-module-autofs)
 

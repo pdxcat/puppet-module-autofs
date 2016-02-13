@@ -5,25 +5,22 @@ define autofs::mount (
   $ensure     = present,
   $mountpoint = $title,
   $options    = undef,
-  $mapfile    = undef,
+  $mapfile    = $autofs::master_mount,
   $order      = undef,
 ) {
   include autofs
-  include autofs::params
 
-  if $mapfile != undef {
-    validate_absolute_path($mapfile)
-    $mapfile_real = $mapfile
-    $content = "${mountpoint} ${options} ${map}\n"
+  validate_absolute_path($mapfile)
+
+  if $mapfile == $autofs::master_mount {
+    $content = "${mountpoint} ${map} ${options}"
   } else {
-    $mapfile_real = $autofs::params::master
-    $content = "${mountpoint} ${map} ${options}\n"
+    $content = "${mountpoint} ${options} ${map}"
   }
 
-  autofs::mapfile::line { "autofs::mount ${mapfile_real}:${mountpoint}":
-    mapfile => $mapfile_real,
+  autofs::mapfile::line { "autofs::mount ${mapfile}:${mountpoint}":
+    mapfile => $mapfile,
     content => $content,
     order   => $order,
   }
-
 }
