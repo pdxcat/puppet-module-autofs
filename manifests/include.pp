@@ -1,23 +1,29 @@
-# == Define: autofs::include
-
 define autofs::include (
-  $map     = $title,
-  $mapfile = undef,
-  $order   = '200',
+  $map                  = $title,
+  $mapfile              = $autofs::params::master,
+  $direct               = undef,
+  $options              = undef,
+  $mountpoint_indirect  = undef
+  $order                = '200',
 ) {
   include autofs
   include autofs::params
 
-  if $mapfile != undef {
-    validate_absolute_path($mapfile)
-    $mapfile_real = $mapfile
+  validate_absolute_path($mapfile)
+
+  if $direct == 'true' {
+    $content_line = "/- ${map} ${options}\n"
   } else {
-    $mapfile_real = $autofs::params::master
+    if $mountpoint_indirect {
+      $content = "${mountpoint_indirect} ${map} ${options}\n"
+    } else {
+      $content = "+${map} ${options}\n"
+    }
   }
 
   autofs::mapfile::line { "autofs::include ${title}":
-    mapfile => $mapfile_real,
-    content => "+${map}\n",
+    mapfile => $mapfile,
+    content => $content,
     order   => $order,
   }
 
