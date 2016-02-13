@@ -1,4 +1,12 @@
-2015-06-16 Release 1.1.0
+2016-02-15 Release 1.2.0
+
+* Refactor Module
+* Added support for concat 2
+* Added parameter for package and service parameters
+* Fixed "Duplicate declaration"-Errors
+* Added ArchLinux Support
+
+2015-06-16 Release 1.1.0 (Reid Vandewiele)
 
 * Enable TravisCI and add Gemfile
 * Add metadata.json
@@ -12,7 +20,7 @@
 * Fix ordering issue with preamble fragment
 * Adding a puppet comment in the managed files
 
-2013-09-28 Release 1.0.0
+2013-09-28 Release 1.0.0 (Reid Vandewiele)
 
 Summary:
 
