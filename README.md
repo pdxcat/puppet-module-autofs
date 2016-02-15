@@ -10,39 +10,28 @@ Puppet module for managing Autofs mountpoints and files.
 ### Some Contrived Example usage
 
 ``` puppet
-autofs::mount { '/home':
-  map     => 'ldap:ou=home,ou=autofs,dc=cat,dc=pdx,dc=edu',
-  options => '-rw,hard,intr,nosuid,nobrowse',
-}
-
-autofs::mount { '/cat':
-  map     => 'ldap:ou=cat,ou=autofs,dc=cat,dc=pdx,dc=edu',
-  options => '-ro,hard,intr,nosuid,browse',
-}
-
 autofs::include { 'auto.web': }
 
-autofs::mount { '/www':
-  map     => 'ldap:ou=www,ou=autofs,dc=cat,dc=pdx,dc=edu',
-  options => '-rw,hard,intr,nosuid,browse',
-  mapfile => '/etc/auto.web',
-}
-
-autofs::include { 'auto.share':
-  direct => 'true',
-  options => '--timeout=3600',
+autofs::mapfile { 'auto.share':
+  directory => '/-'
+  options   => '--timeout=3600',
 }
 
 autofs::mount { '/share':
-  map => '',
-  options => '-fstype=nfs,rw,soft,intr	192.168.1.100:/share',
-  mapfile => '/etc/auto.share',
+  map     => 'nfsserver:/share'',
+  options => '-fstype=nfs,rw,soft,intr,
+  mapfile => 'auto.share',
+}
+
+autofs::mapfile { 'auto.home':
+  directory => '/home'
+  options   => '--timeout=3600',
 }
 
 autofs::mount { '*':
-  map => '',
-  options => '-fstype=nfs,rw,soft,intr	192.168.1.100:/users/&',
-  mapfile => '/etc/auto.users',
+  map     => 'nfsserver:/homes/&',
+  options => '-fstype=nfs,rw,soft,intr',
+  mapfile => 'auto.home',
 }
 
 autofs::include { 'auto.local': }
@@ -50,36 +39,28 @@ autofs::include { 'auto.local': }
 
 ### Resulting files
 
-#### /etc/auto.master
+#### auto.master
 
 ```
-/cat ldap:ou=cat,ou=autofs,dc=cat,dc=pdx,dc=edu -ro,hard,intr,nosuid,browse
-/home ldap:ou=home,ou=autofs,dc=cat,dc=pdx,dc=edu -rw,hard,intr,nosuid,nobrowse
-/users auto.users --timeout=3600
+/home auto.home --timeout=3600
 /- auto.share --timeout=3600
 +auto.local
 +auto.web
 ```
 
-#### /etc/auto.web
+#### auto.share
 
 ```
-/www ldap:ou=www,ou=autofs,dc=cat,dc=pdx,dc=edu -rw,hard,intr,nosuid,browse
+/share  -fstype=nfs,rw,soft,intr	nfsserver:/share
 ```
 
-#### /etc/auto.share
+#### auto.users
 
 ```
-/share  -fstype=nfs,rw,soft,intr	192.168.1.100:/share
+*  -fstype=nfs,rw,soft,intr	nfsserver:/homes/&
 ```
 
-#### /etc/auto.users
-
-```
-*  -fstype=nfs,rw,soft,intr	192.168.1.100:/users/&
-```
-
-#### /etc/auto.local
+#### auto.local
 
 This file is not managed by puppet, and so there is no way to know what its
 contents will be. Puppet doesn't care.

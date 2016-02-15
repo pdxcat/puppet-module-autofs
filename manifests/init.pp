@@ -17,6 +17,7 @@ class autofs(
   $service_restart    = $autofs::params::service_restart,
   $maps               = {},
   $mounts             = {},
+  $includes           = {},
 ) inherits autofs::params {
   validate_string($master_config)
   validate_absolute_path($map_config_dir)
@@ -31,6 +32,7 @@ class autofs(
   validate_string($service_restart)
   validate_hash($maps)
   validate_hash($mounts)
+  validate_hash($includes)
 
   # Anchor this as per #8040 - this ensures that classes won't float off and
   # mess everything up.  You can read about this at:

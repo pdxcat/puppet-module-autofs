@@ -10,18 +10,19 @@ define autofs::mapfile(
   validate_string($options)
   validate_hash($mounts)
 
-  $mapfile_path = "${autofs::map_config_dir}/${autofs::master_config}"
+  include ::autofs
 
   if $mapfile != $autofs::master_config {
     concat::fragment { "${autofs::master_config}/${mapfile}":
-      target  => $mapfile,
+      target  => $autofs::master_config,
       content => "${directory} ${mapfile} ${options}";
     }
   }
 
-  concat { $mapfile_path:
+  concat { $mapfile:
     owner          => $autofs::config_file_owner,
     group          => $autofs::config_file_group,
+    path           => "${autofs::map_config_dir}/${mapfile}",
     mode           => '0644',
     warn           => true,
     ensure_newline => true,
