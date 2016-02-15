@@ -13,7 +13,7 @@ Puppet module for managing Autofs mountpoints and files.
 autofs::include { 'auto.web': }
 
 autofs::mapfile { 'auto.share':
-  directory => '/-'
+  directory => '/-',
   options   => '--timeout=3600',
 }
 
@@ -24,7 +24,7 @@ autofs::mount { '/share':
 }
 
 autofs::mapfile { 'auto.home':
-  directory => '/home'
+  directory => '/home',
   options   => '--timeout=3600',
 }
 
