@@ -1,26 +1,35 @@
-# == Define: autofs::mount
-
-define autofs::mount (
+define autofs::mount(
   $map,
-  $ensure     = present,
-  $mountpoint = $title,
-  $options    = undef,
-  $mapfile    = $autofs::master_mount,
-  $order      = undef,
+  $device,
+  $mount   = $name,
+  $ensure  = 'present',
+  $options = undef,
 ) {
   include autofs
 
-  validate_absolute_path($mapfile)
+  validate_string($map)
+  validate_string($device)
+  validate_string($mount)
+  validate_string($ensure)
+  validate_string($options)
 
-  if $mapfile == $autofs::master_mount {
-    $content = "${mountpoint} ${map} ${options}"
-  } else {
-    $content = "${mountpoint} ${options} ${map}"
-  }
+  if $ensure == 'present' {
+    ensure_resource('autofs::mapfile', $map)
 
-  autofs::mapfile::line { "autofs::mount ${mapfile}:${mountpoint}":
-    mapfile => $mapfile,
-    content => $content,
-    order   => $order,
+    if $map == $autofs::master_config {
+      fail("You can not add mounts directly to the ${autofs::map_config_dir}/${autofs::master_config}")
+    }
+
+    $mounts = {
+      mount   => $mount,
+      options => $options,
+      device  => $device,
+    }
+
+    concat::fragment { "${mount}@${map}":
+      target  => $map,
+      content => template('autofs/mounts.erb'),
+      require => Autofs::Mapfile[$map];
+    }
   }
 }

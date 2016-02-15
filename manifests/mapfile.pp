@@ -1,17 +1,33 @@
-# == Define: autofs::mapfile
-
-define autofs::mapfile (
-  $path
+#
+define autofs::mapfile(
+  $mapfile = $name,
+  $mounts  = {}
 ) {
-  include autofs
+  validate_string($mapfile)
+  validate_hash($mounts)
 
-  concat { $path:
-    owner          => $autofs::file_owner,
-    group          => $autofs::file_group,
+  $mapfile_path = "${autofs::map_config_dir}/${autofs::master_config}"
+
+  if $mapfile != $autofs::master_config {
+    concat::fragment { "${autofs::master_config}/${mapfile}":
+      target  => $mapfile,
+      content => template('autofs/mapfiles.erb');
+    }
+  }
+
+  concat { $mapfile_path:
+    owner          => $autofs::config_file_owner,
+    group          => $autofs::config_file_group,
     mode           => '0644',
     warn           => true,
     ensure_newline => true,
-    notify         => Service[$autofs::service_name],
-    require        => Package[$autofs::package_name],
+    notify         => Class['autofs::service'],
+    require        => Class['autofs::install'],
+  }
+
+  concat::fragment { "${mapfile}/mounts":
+    target  => $mapfile_path,
+    content => template('autofs/mounts.erb'),
+    order   => '01',
   }
 }
