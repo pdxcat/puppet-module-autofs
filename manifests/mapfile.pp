@@ -5,7 +5,6 @@ define autofs::mapfile(
   $options  = undef,
   $mounts   = {}
 ) {
-  validate_absolute_path($directory)
   validate_string($mapfile)
   validate_string($options)
   validate_hash($mounts)
@@ -13,6 +12,8 @@ define autofs::mapfile(
   include ::autofs
 
   if $mapfile != $autofs::master_config {
+    validate_absolute_path($directory)
+
     concat::fragment { "${autofs::master_config}/${mapfile}":
       target  => $autofs::master_config,
       content => "${directory} ${mapfile} ${options}";
