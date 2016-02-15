@@ -5,6 +5,6 @@ class autofs::config inherits autofs {
   }
 
   create_resources('autofs::includes', $autofs::includes)
-  create_resources('autofs::mapfile', $autofs::maps)
+  create_resources('autofs::mapfile', $autofs::mapfiles)
   create_resources('autofs::mount', $autofs::mounts)
 }

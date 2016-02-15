@@ -5,6 +5,7 @@ define autofs::mount(
   $mount   = $name,
   $ensure  = 'present',
   $options = undef,
+  $order   = undef,
 ) {
   validate_string($mapfile)
   validate_string($map)
@@ -18,15 +19,13 @@ define autofs::mount(
     fail("You can't add mounts directly to ${autofs::mapfile_config_dir}/${autofs::master_config}!")
   }
 
-  # Allow mount@mapfile as name, if we have the same mountpoints under different share.
-  $_mount = regsubst($mount, '^([^@]+)@?.*$', '\1')
-
   if $ensure == 'present' {
     ensure_resource('autofs::mapfile', $mapfile)
 
-    concat::fragment { "${_mount}@${mapfile}":
+    concat::fragment { "${mount}@${mapfile}":
       target  => $mapfile,
-      content => "${_mount} ${options} ${map}";
+      content => "${mount} ${options} ${map}",
+      order   => $order;
     }
   }
 }

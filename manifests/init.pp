@@ -15,7 +15,7 @@ class autofs(
   $service_ensure     = $autofs::params::service_ensure,
   $service_enable     = $autofs::params::service_enable,
   $service_restart    = $autofs::params::service_restart,
-  $maps               = {},
+  $mapfiles           = {},
   $mounts             = {},
   $includes           = {},
 ) inherits autofs::params {
@@ -30,7 +30,7 @@ class autofs(
   validate_string($service_ensure)
   validate_bool($service_enable)
   validate_string($service_restart)
-  validate_hash($maps)
+  validate_hash($mapfiles)
   validate_hash($mounts)
   validate_hash($includes)
 

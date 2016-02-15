@@ -3,6 +3,7 @@ define autofs::mapfile(
   $directory,
   $mapfile  = $name,
   $options  = undef,
+  $order    = undef,
   $mounts   = {}
 ) {
   validate_string($mapfile)
@@ -16,7 +17,8 @@ define autofs::mapfile(
 
     concat::fragment { "${autofs::master_config}/${mapfile}":
       target  => $autofs::master_config,
-      content => "${directory} ${mapfile} ${options}";
+      content => "${directory} ${mapfile} ${options}",
+      order   => $order;
     }
   }
 
