@@ -1,10 +1,11 @@
-2016-02-15 Release 2.0.0
+2016-02-15 Release 2.0.1 (Version 2.0.0 has some issue with documentation)
 
 * Refactor Module
 * Added support for concat 2
 * Added parameter for package and service parameters
 * Fixed "Duplicate declaration"-Errors
 * Added ArchLinux Support
+
 
 2015-06-16 Release 1.1.0 (Reid Vandewiele)
 
