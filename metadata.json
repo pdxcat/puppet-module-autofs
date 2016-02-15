@@ -70,7 +70,7 @@
     }
   ],
   "name": "jkroepke-autofs",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "source": "https://github.com/jkroepke/puppet-module-autofs",
   "author": "Jan-Otto Kröpke",
   "license": "Apache-2.0",
