@@ -2,7 +2,7 @@
 
 class autofs::params {
   $package_ensure = 'installed'
-  $service_ensure = 'runnning'
+  $service_ensure = 'running'
   $service_enable = true
 
   case $::osfamily {
