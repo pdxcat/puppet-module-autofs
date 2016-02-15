@@ -1,9 +1,13 @@
 #
 define autofs::mapfile(
-  $mapfile = $name,
-  $mounts  = {}
+  $directory,
+  $mapfile  = $name,
+  $options  = undef,
+  $mounts   = {}
 ) {
+  validate_absolute_path($directory)
   validate_string($mapfile)
+  validate_string($options)
   validate_hash($mounts)
 
   $mapfile_path = "${autofs::map_config_dir}/${autofs::master_config}"
@@ -11,7 +15,7 @@ define autofs::mapfile(
   if $mapfile != $autofs::master_config {
     concat::fragment { "${autofs::master_config}/${mapfile}":
       target  => $mapfile,
-      content => template('autofs/mapfiles.erb');
+      content => "${directory} ${mapfile} ${options}";
     }
   }
 
@@ -25,9 +29,7 @@ define autofs::mapfile(
     require        => Class['autofs::install'],
   }
 
-  concat::fragment { "${mapfile}/mounts":
-    target  => $mapfile_path,
-    content => template('autofs/mounts.erb'),
-    order   => '01',
-  }
+  create_resources('autofs::mount', $mounts, {
+    map => $mapfile
+  })
 }

@@ -1,5 +1,5 @@
 define autofs::mount(
-  $map,
+  $mapfile,
   $device,
   $mount   = $name,
   $ensure  = 'present',
@@ -7,29 +7,26 @@ define autofs::mount(
 ) {
   include autofs
 
-  validate_string($map)
+  validate_string($mapfile)
   validate_string($device)
   validate_string($mount)
   validate_string($ensure)
   validate_string($options)
 
+  if $mapfile == $autofs::master_config {
+    fail("You can't add mounts directly to ${autofs::mapfile_config_dir}/${autofs::master_config}!")
+  }
+
+  # Allow mount@mapfile as name, if we have the same mountpoints under different share.
+  $_mount = regsubst($mount, '^([^@]+)@?.*$', '\1')
+
   if $ensure == 'present' {
-    ensure_resource('autofs::mapfile', $map)
+    ensure_resource('autofs::mapfile', $mapfile)
 
-    if $map == $autofs::master_config {
-      fail("You can not add mounts directly to the ${autofs::map_config_dir}/${autofs::master_config}")
-    }
-
-    $mounts = {
-      mount   => $mount,
-      options => $options,
-      device  => $device,
-    }
-
-    concat::fragment { "${mount}@${map}":
-      target  => $map,
-      content => template('autofs/mounts.erb'),
-      require => Autofs::Mapfile[$map];
+    concat::fragment { "${_mount}@${mapfile}":
+      target  => "${autofs::mapfile_config_dir}/${mapfile}",
+      content => "${_mount} ${options} ${device}",
+      require => Autofs::Mapfile[$mapfile];
     }
   }
 }
