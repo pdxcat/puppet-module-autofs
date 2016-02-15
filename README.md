@@ -39,11 +39,6 @@ autofs::mount { '/share':
   mapfile => '/etc/auto.share',
 }
 
-autofs::include { 'auto.users':
-  mountpoint_indirect => '/users',
-  options => '--timeout=3600',
-}
-
 autofs::mount { '*':
   map => '',
   options => '-fstype=nfs,rw,soft,intr	192.168.1.100:/users/&',

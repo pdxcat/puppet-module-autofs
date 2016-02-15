@@ -10,7 +10,6 @@ class autofs(
   $file_owner     = $autofs::params::file_owner,
   $file_group     = $autofs::params::file_group,
 ) inherits autofs::params {
-  validate_string($package_name)
   validate_absolute_path($master_mount)
   validate_bool($service_enable)
 
