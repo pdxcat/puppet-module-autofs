@@ -1,11 +1,12 @@
 # == Define: autofs::params
 
 class autofs::params {
-  $package_manage = true
-  $package_ensure = 'installed'
-  $service_manage = true
-  $service_ensure = 'running'
-  $service_enable = true
+  $package_manage  = true
+  $package_ensure  = 'installed'
+  $service_manage  = true
+  $service_ensure  = 'running'
+  $service_enable  = true
+  $service_restart = undef
 
   case $::osfamily {
     'Debian': {
@@ -17,7 +18,6 @@ class autofs::params {
       $service_name       = 'autofs'
       $service_hasrestart = true
       $service_hasstatus  = true
-      $service_restart    = "/etc/init.d/${service_name} reload"
     }
     'Solaris': {
       $config_file_group  = 'root'
@@ -28,7 +28,6 @@ class autofs::params {
       $service_name       = 'autofs'
       $service_hasrestart = true
       $service_hasstatus  = true
-      $service_restart    = undef # unknown
     }
     'RedHat': {
       $config_file_group  = 'root'
@@ -39,7 +38,6 @@ class autofs::params {
       $service_name       = 'autofs'
       $service_hasrestart = true
       $service_hasstatus  = true
-      $service_restart    = "/usr/bin/service ${service_name} reload"
     }
     'Archlinux': {
       $config_file_group  = 'root'
@@ -50,7 +48,6 @@ class autofs::params {
       $service_name       = 'autofs'
       $service_hasrestart = true
       $service_hasstatus  = true
-      $service_restart    = "/usr/bin/systemctl reload ${service_name}"
     }
     default: {
       fail("osfamily not supported: ${::osfamily}")
