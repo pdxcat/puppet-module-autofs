@@ -26,8 +26,7 @@ define autofs::mount(
 
     concat::fragment { "${_mount}@${mapfile}":
       target  => $mapfile,
-      content => "${_mount} ${options} ${map}",
-      require => Autofs::Mapfile[$mapfile];
+      content => "${_mount} ${options} ${map}";
     }
   }
 }
