@@ -1,3 +1,4 @@
+#
 define autofs::mount(
   $mapfile,
   $device,
