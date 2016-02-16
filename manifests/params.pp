@@ -49,6 +49,16 @@ class autofs::params {
       $service_hasrestart = true
       $service_hasstatus  = true
     }
+    'Gentoo': {
+      $config_file_group  = 'root'
+      $config_file_owner  = 'root'
+      $master_config      = 'auto.master'
+      $map_config_dir     = '/etc/autofs'
+      $package_name       = [ 'net-fs/autofs' ]
+      $service_name       = 'autofs'
+      $service_hasrestart = true
+      $service_hasstatus  = true
+    }
     default: {
       fail("osfamily not supported: ${::osfamily}")
     }
