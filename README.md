@@ -106,10 +106,10 @@ autofs::includes:
   
 autofs::mapfiles:
   auto.home:
-    directory: '/home', 
+    directory: '/home'
     options: '--timeout 300'
   auto.share:
-    directory: '/-',
+    directory: '/-'
     options: '--timeout 600'
     
 autofs::mounts:
