@@ -1,11 +1,13 @@
 {
   "name": "jkroepke-autofs",
   "version": "2.0.1",
-  "source": "https://github.com/jkroepke/puppet-module-autofs",
   "author": "Jan-Otto Kröpke",
   "license": "Apache-2.0",
   "summary": "Puppet module for Autofs",
   "project_page": "https://github.com/jkroepke/puppet-module-autofs",
+  "source": "https://github.com/jkroepke/puppet-module-autofs",
+  "issues_url": "https://github.com/jkroepke/puppet-module-autofs/issues",
+  "tags": ["autofs", "automount"],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
@@ -65,12 +67,6 @@
     },
     {
       "operatingsystem": "Gentoo"
-    },
-    {
-      "operatingsystem": "FreeBSD"
-    },
-    {
-      "operatingsystem": "Solaris"
     },
     {
       "operatingsystem": "Archlinux"
