@@ -7,7 +7,7 @@
   "project_page": "https://github.com/jkroepke/puppet-module-autofs",
   "source": "https://github.com/jkroepke/puppet-module-autofs",
   "issues_url": "https://github.com/jkroepke/puppet-module-autofs/issues",
-  "tags": ["autofs", "automount"],
+  "tags": ["autofs", "automount", "mount"],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",

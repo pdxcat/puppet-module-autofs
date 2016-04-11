@@ -29,7 +29,7 @@ Installs and configures autofs which provides automount functionality. Tested wi
 ```puppet
 class { '::autofs':
   package_manage  => false,
-  service_restart => '/usr/bin/systemctl reload autofs',
+  service_restart => '/usr/bin/systemctl reload autofs';
 }
 ```
 
@@ -45,7 +45,7 @@ autofs::service_restart: '/usr/bin/systemctl reload autofs'
 ```puppet
 ::autofs::mapfile{ 'auto.home':
   directory => '/home',
-  options   => '--timeout 300'
+  options   => '--timeout 300';
 }
 ```
 
@@ -53,7 +53,7 @@ autofs::service_restart: '/usr/bin/systemctl reload autofs'
 ```puppet
 ::autofs::mapfile{ 'auto.share':
   directory => '/-',
-  options   => '--timeout 300'
+  options   => '--timeout 300';
 }
 ```
 
