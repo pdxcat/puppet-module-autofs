@@ -1,6 +1,6 @@
 {
   "name": "jkroepke-autofs",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Jan-Otto Kröpke",
   "license": "Apache-2.0",
   "summary": "Puppet module for Autofs",
