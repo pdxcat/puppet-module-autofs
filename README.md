@@ -57,6 +57,21 @@ autofs::service_restart: '/usr/bin/systemctl reload autofs'
 }
 ```
 
+### Remove a no-longer-needed map file
+```puppet
+::autofs::mapfile{ 'auto.share':
+  ensure    => absent,
+  directory => '/-',
+}
+```
+
+### Remove a no-longer-needed map file and purge the mount directory:
+```puppet
+::autofs::mapfile{ 'auto.home':
+  ensure    => purged,
+  directory => '/home',
+```
+
 ### Include an other master config
 ```puppet
 ::autofs::include{ 'auto.local': }
