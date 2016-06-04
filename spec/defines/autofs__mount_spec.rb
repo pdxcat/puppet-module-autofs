@@ -14,7 +14,7 @@ describe 'autofs::mount' do
       it { should_not raise_error }
       it {
           should contain_concat__fragment('/mnt/foo@auto.foo').
-          with_content(/\/\/mnt\/foo  nfsserver:\/nfs\/share/)
+          with_content(/\/mnt\/foo  nfsserver:\/nfs\/share/)
       }
   end
 
@@ -31,7 +31,7 @@ describe 'autofs::mount' do
       it { should_not raise_error }
       it {
           should contain_concat__fragment('/mnt/foo@auto.foo').
-          with_content(/\/\/mnt\/foo rw nfsserver:\/nfs\/share/)
+          with_content(/\/mnt\/foo rw nfsserver:\/nfs\/share/)
       }
   end
 
