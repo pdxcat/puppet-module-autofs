@@ -16,10 +16,6 @@ describe 'autofs::mount' do
           should contain_concat__fragment('/mnt/foo@auto.foo').
           with_content(/\/\/mnt\/foo  nfsserver:\/nfs\/share/)
       }
-      it {
-          should contain_concat('auto.foo').
-          with_ensure('present')
-      }
   end
 
   describe 'passing absent for ensure' do

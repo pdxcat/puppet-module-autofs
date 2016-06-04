@@ -21,8 +21,6 @@ define autofs::mount(
   }
 
   if $ensure == 'present' {
-    ensure_resource('autofs::mapfile', $mapfile)
-
     concat::fragment { "${mount}@${mapfile}":
       target  => $mapfile,
       content => "${mount} ${options} ${map}",
