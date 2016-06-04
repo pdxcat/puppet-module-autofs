@@ -53,5 +53,22 @@ describe 'autofs::mapfile' do
       }
   end
 
+  describe 'with an invalid map type' do
+      let(:params) {{ :directory => '/foo' , :maptype => 'bar' }}
+      it { should raise_error(Puppet::Error, /maptype must be one of/) }
+  end
+
+  describe 'with a different map type' do
+      let(:params) {{ :directory => '/foo' , :maptype => 'program' }}
+      it { should_not raise_error }
+      it {
+          should contain_concat__fragment('auto.master/auto.foo').
+          with_content(/program:auto.foo/)
+      }
+      it {
+          should_not contain_concat('auto.foo')
+      }
+  end
+
 end
 

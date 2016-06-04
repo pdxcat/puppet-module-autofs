@@ -72,6 +72,14 @@ autofs::service_restart: '/usr/bin/systemctl reload autofs'
   directory => '/home',
 ```
 
+### Added a map file with a non-'file' type
+```puppet
+::autofs::mapfile{ 'auto.chroot':
+  directory => '/chroot',
+  maptype   => program ,
+}
+```
+
 ### Include an other master config
 ```puppet
 ::autofs::include{ 'auto.local': }
