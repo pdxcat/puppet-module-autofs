@@ -7,7 +7,7 @@ describe 'autofs::include' do
   describe 'testing class' do
       it { should_not raise_error }
       it {
-          should contain_concat__fragment('auto.master/auto.foo').
+          should contain_concat__fragment('auto.master/auto.include').
           with_content(/\+auto\.include/)
       }
   end
