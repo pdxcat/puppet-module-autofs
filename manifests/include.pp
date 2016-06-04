@@ -1,24 +1,16 @@
-# == Define: autofs::include
-
-define autofs::include (
-  $map     = $title,
-  $mapfile = undef,
-  $order   = '200',
+define autofs::include(
+  $mapfile = $name,
+  $order   = undef
 ) {
-  include autofs
-  include autofs::params
+  include ::autofs
 
-  if $mapfile != undef {
-    validate_absolute_path($mapfile)
-    $mapfile_real = $mapfile
-  } else {
-    $mapfile_real = $autofs::params::master
+  if $mapfile == $autofs::master_config {
+    fail("${autofs::mapfile_config_dir}/${autofs::master_config} can't include itself!")
   }
 
-  autofs::mapfile::line { "autofs::include ${title}":
-    mapfile => $mapfile_real,
-    content => "+${map}\n",
-    order   => $order,
+  concat::fragment { "${autofs::master_config}/${mapfile}":
+    target  => $autofs::master_config,
+    content => "+${mapfile}",
+    order   => $order;
   }
-
 }

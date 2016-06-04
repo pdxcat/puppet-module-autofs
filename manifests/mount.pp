@@ -1,29 +1,30 @@
-# == Define: autofs::mount
-
-define autofs::mount (
+#
+define autofs::mount(
+  $mapfile,
   $map,
-  $ensure     = present,
-  $mountpoint = $title,
-  $options    = undef,
-  $mapfile    = undef,
-  $order      = undef,
+  $mount   = $name,
+  $ensure  = 'present',
+  $options = undef,
+  $order   = undef,
 ) {
-  include autofs
-  include autofs::params
+  validate_string($mapfile)
+  validate_string($map)
+  validate_string($mount)
+  validate_string($options)
 
-  if $mapfile != undef {
-    validate_absolute_path($mapfile)
-    $mapfile_real = $mapfile
-    $content = "${mountpoint} ${options} ${map}\n"
-  } else {
-    $mapfile_real = $autofs::params::master
-    $content = "${mountpoint} ${map} ${options}\n"
+  validate_re($ensure, '^present$|^absent$', 'ensure must be one of: present or absen')
+
+  include ::autofs
+
+  if $mapfile == $autofs::master_config {
+    fail("You can't add mounts directly to ${autofs::mapfile_config_dir}/${autofs::master_config}!")
   }
 
-  autofs::mapfile::line { "autofs::mount ${mapfile_real}:${mountpoint}":
-    mapfile => $mapfile_real,
-    content => $content,
-    order   => $order,
+  if $ensure == 'present' {
+    concat::fragment { "${mount}@${mapfile}":
+      target  => $mapfile,
+      content => "${mount} ${options} ${map}",
+      order   => $order;
+    }
   }
-
 }
