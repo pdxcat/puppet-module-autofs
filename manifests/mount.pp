@@ -10,8 +10,9 @@ define autofs::mount(
   validate_string($mapfile)
   validate_string($map)
   validate_string($mount)
-  validate_string($ensure)
   validate_string($options)
+
+  validate_re($ensure, '^present$|^absent$', 'ensure must be one of: present or absen')
 
   include ::autofs
 
