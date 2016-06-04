@@ -8,7 +8,7 @@ describe 'autofs::include' do
       it { should_not raise_error }
       it {
           should contain_concat__fragment('auto.master/auto.foo').
-          with_content(/+auto\.include/)
+          with_content(/\+auto\.include/)
       }
   end
 
@@ -17,7 +17,7 @@ describe 'autofs::include' do
       it { should_not raise_error }
       it {
           should contain_concat__fragment('auto.master/auto.foo').
-          with_content(/+auto\.foo/).
+          with_content(/\+auto\.foo/).
           with_order('5')
       }
   end
