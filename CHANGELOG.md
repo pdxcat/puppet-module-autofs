@@ -1,5 +1,6 @@
 2016 Release next
 
+* Add parameter maptype ([#4](https://github.com/jkroepke/puppet-module-autofs/pull/4); jearls)
 * Add ensure parameter to ::autofs::mapfile ([#2](https://github.com/jkroepke/puppet-module-autofs/pull/2); jearls)
 
 2016-04-12 Release 2.0.2
