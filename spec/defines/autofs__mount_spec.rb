@@ -23,7 +23,6 @@ describe 'autofs::mount' do
       it { should_not raise_error }
       it {
           should_not contain_concat__fragment('/mnt/foo@auto.foo')
-          should_not contain_autofs__mapfile('auto.foo')
       }
   end
 
@@ -42,14 +41,6 @@ describe 'autofs::mount' do
       it {
           should contain_concat__fragment('/mnt/foo@auto.foo').
           with_order('5')
-      }
-  end
-
-  describe 'testing if autofs::mapfile is present' do
-      let(:params) {{ :mapfile => 'auto.foo' , :map => 'nfsserver:/nfs/share' , :order => '5' , :ensure => 'present' }}
-      it { should_not raise_error }
-      it {
-        should contain_autofs__mapfile('auto.foo')
       }
   end
 end
