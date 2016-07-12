@@ -10,15 +10,15 @@ define autofs::mount (
   $mapfile_options = undef
 ) {
 
-  include autofs
-  include autofs::params
+  include ::autofs
+  include ::autofs::params
 
   if $mapfile != undef {
     validate_absolute_path($mapfile)
     $mapfile_real = $mapfile
     $content = "${mountpoint} ${options} ${map}\n"
   } else {
-    $mapfile_real = $autofs::params::master
+    $mapfile_real = $::autofs::params::master
     $content = "${mountpoint} ${map} ${options}\n"
   }
 
@@ -28,7 +28,7 @@ define autofs::mount (
     order   => $order,
   }
 
-  if $mapfile {
+  if $mapfile != undef {
     include ::autofs::master
 
     concat::fragment { "autofs::mount master ${map}:${mountpoint}":
