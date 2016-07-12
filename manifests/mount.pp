@@ -31,10 +31,10 @@ define autofs::mount (
   if $mapfile != undef {
     include ::autofs::master
 
-    concat::fragment { "autofs::mount master ${map}:${mountpoint}":
+    concat::fragment { "autofs::mount master ${mapfile_real}:${mountpoint}":
       ensure  => $ensure,
       target  => $autofs::params::master,
-      content => "${title} ${map} ${mapfile_options} \n",
+      content => "${title} ${mapfile_real} ${mapfile_options} \n",
     }
 
   }
