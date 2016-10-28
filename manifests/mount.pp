@@ -14,10 +14,10 @@ define autofs::mount (
   if $mapfile != undef {
     validate_absolute_path($mapfile)
     $mapfile_real = $mapfile
-    $content = "${mountpoint} ${options} ${map}\n"
+    $content = "${mountpoint} ${options} \"${map}\"\n"
   } else {
     $mapfile_real = $autofs::params::master
-    $content = "${mountpoint} ${map} ${options}\n"
+    $content = "${mountpoint} \"${map}\" ${options}\n"
   }
 
   autofs::mapfile::line { "autofs::mount ${mapfile_real}:${mountpoint}":
