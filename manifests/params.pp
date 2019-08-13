@@ -32,6 +32,14 @@ class autofs::params {
       $service    = 'autofs'
       $service_provider = undef
     }
+    'Archlinux': {
+      $group      = 'root'
+      $master     = '/etc/autofs/auto.master'
+      $owner      = 'root'
+      $package    = [ 'autofs' ]
+      $service    = 'autofs'
+      $service_provider = undef
+    }
     default: {
       fail("osfamily not supported: ${::osfamily}")
     }
